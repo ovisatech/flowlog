@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import debug from "./utils/debug";
+import debug from "../../utils/debug";
 
 const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
   const { avgFlowRates, entriesWithEstimatedVolume } = useMemo(() => {

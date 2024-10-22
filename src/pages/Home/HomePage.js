@@ -9,10 +9,10 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import EntryForm from "./EntryForm";
-import HistoryView from "./HistoryView";
-import debug from "./utils/debug";
-import { exportToCSV, importFromCSV } from "./utils/csvUtils";
+import EntryForm from "../../components/EntryForm/EntryForm";
+import HistoryView from "../../components/HistoryView/HistoryView";
+import debug from "../../utils/debug";
+import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 
 const HomePage = ({
   entries,

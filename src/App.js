@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import HomePage from "./HomePage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
+import HomePage from "./pages/Home/HomePage";
+import HistoryPage from "./pages/HistoryPage/HistoryPage";
 import debug from "./utils/debug";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2",
-    },
-    secondary: {
-      main: "#388e3c",
-    },
-  },
-});
+import { EntriesProvider } from "./context/EntriesContext";
+import Layout from "./components/Layout/Layout";
 
 function App() {
   const [entries, setEntries] = useState([]);
@@ -70,16 +63,28 @@ function App() {
   debug("App render. Current entries:", entries);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <HomePage
-        entries={entries}
-        onNewEntry={handleNewEntry}
-        onDeleteEntry={handleDeleteEntry}
-        onUpdateEntry={handleUpdateEntry}
-        onImportEntries={handleImportEntries}
-      />
-    </ThemeProvider>
+    <EntriesProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  entries={entries}
+                  onNewEntry={handleNewEntry}
+                  onDeleteEntry={handleDeleteEntry}
+                  onUpdateEntry={handleUpdateEntry}
+                  onImportEntries={handleImportEntries}
+                />
+              }
+            />
+            <Route path="/history" element={<HistoryPage />} />
+          </Routes>
+          <CssBaseline />
+        </Layout>
+      </Router>
+    </EntriesProvider>
   );
 }
 
