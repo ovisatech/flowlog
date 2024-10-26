@@ -18,7 +18,7 @@ const useEntries = () => {
   }, []);
 
   const saveEntries = useCallback((newEntries) => {
-    localStorage.setItem("entries", JSON.stringify(newEntries));
+    localStorage.setItem("urinationEntries", JSON.stringify(newEntries));
     setEntries(newEntries);
   }, []);
 
