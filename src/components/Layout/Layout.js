@@ -1,25 +1,41 @@
-import React from "react";
-import { Box, BottomNavigation, BottomNavigationAction } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import HistoryIcon from "@mui/icons-material/History";
+import React, { useState } from "react";
+import {
+  Box,
+  BottomNavigation,
+  BottomNavigationAction,
+  SpeedDial,
+  SpeedDialIcon,
+  SpeedDialAction,
+} from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
-import WcIcon from "@mui/icons-material/Wc";
-import SettingsIcon from "@mui/icons-material/Settings";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { WaterDrop, LocalDrink, Home, History } from "@mui/icons-material";
+import AddFlow from "../AddFlow";
 
 const Layout = ({ children }) => {
+  const [isAddFlowOpen, setIsAddFlowOpen] = useState(false);
   const location = useLocation();
+
+  const handleAddFlowOpen = () => {
+    setIsAddFlowOpen(true);
+  };
+
+  const handleAddFlowClose = () => {
+    setIsAddFlowOpen(false);
+  };
+
   const actions = [
-    { icon: <LocalDrinkIcon />, name: "Add intake" },
-    { icon: <WcIcon />, name: "Add urination" },
+    { icon: <LocalDrink />, name: "Add intake" },
+    {
+      icon: <WaterDrop />,
+      name: "Add urination",
+      onClick: handleAddFlowOpen,
+    },
   ];
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <AddFlow open={isAddFlowOpen} onClose={handleAddFlowClose} />
+
       <Box sx={{ flex: 1, overflow: "auto", padding: 2 }}>{children}</Box>
 
       <BottomNavigation
@@ -30,7 +46,7 @@ const Layout = ({ children }) => {
         <BottomNavigationAction
           label="Home"
           value="/"
-          icon={<HomeIcon />}
+          icon={<Home />}
           component={Link}
           to="/"
         />
@@ -48,9 +64,7 @@ const Layout = ({ children }) => {
                     key={action.name}
                     icon={action.icon}
                     tooltipTitle={action.name}
-                    onClick={() => {
-                      alert("clicked");
-                    }}
+                    onClick={action.onClick}
                   />
                 ))}
               </SpeedDial>{" "}
@@ -67,24 +81,10 @@ const Layout = ({ children }) => {
         <BottomNavigationAction
           label="History"
           value="/history"
-          icon={<HistoryIcon />}
+          icon={<History />}
           component={Link}
           to="/history"
         />
-        {/* <BottomNavigationAction
-          label="Statistics"
-          value="/statistics"
-          icon={<BarChartIcon />}
-          component={Link}
-          to="/history"
-        />
-        <BottomNavigationAction
-          label="Settings"
-          value="/settings"
-          icon={<SettingsIcon />}
-          component={Link}
-          to="/history"
-        /> */}
       </BottomNavigation>
     </Box>
   );

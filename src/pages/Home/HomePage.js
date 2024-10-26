@@ -1,19 +1,10 @@
-import React, { useState, useMemo, useCallback, useRef } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Modal,
-  Paper,
-  Grid,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import React, { useState, useMemo, useCallback } from "react";
+import { Box, Modal, Snackbar, Alert } from "@mui/material";
 import EntryForm from "../../components/EntryForm/EntryForm";
 import debug from "../../utils/debug";
-import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 import FlowlogCard from "../../components/FlowlogCard";
 import { useEntriesContext } from "../../context/EntriesContext";
+import ImportExport from "../../components/ImportExport";
 
 const HomePage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -22,8 +13,7 @@ const HomePage = () => {
     message: "",
     severity: "info",
   });
-  const fileInputRef = useRef(null);
-  const { entries, addEntry, updateEntry, importEntries } = useEntriesContext();
+  const { entries, updateEntry } = useEntriesContext();
 
   debug("HomePage render. Current entries:", entries);
 
@@ -70,42 +60,6 @@ const HomePage = () => {
     };
   }, [entries]);
 
-  const handleExport = () => {
-    exportToCSV(entries);
-    setSnackbar({
-      open: true,
-      message: "Data exported successfully",
-      severity: "success",
-    });
-  };
-
-  const handleImport = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      importFromCSV(file)
-        .then((importedEntries) => {
-          importEntries(importedEntries);
-          setSnackbar({
-            open: true,
-            message: "Data imported successfully",
-            severity: "success",
-          });
-        })
-        .catch((error) => {
-          debug("Error importing data", error);
-          setSnackbar({
-            open: true,
-            message: "Error importing data",
-            severity: "error",
-          });
-        });
-    }
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
-  };
-
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -149,72 +103,7 @@ const HomePage = () => {
   return (
     <Box sx={{ maxWidth: 600, margin: "auto", padding: 3 }}>
       <FlowlogCard />
-      <Box
-        sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}
-      >
-        <Button variant="outlined" onClick={handleExport}>
-          Export Data
-        </Button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleImport}
-          accept=".csv"
-        />
-        <Button variant="outlined" onClick={triggerFileInput}>
-          Import Data
-        </Button>
-      </Box>
-
-      <Paper elevation={3} sx={{ padding: 3, marginBottom: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">Avg. Duration</Typography>
-            <Typography variant="h6">
-              {calculations.avgDuration.toFixed(1)} sec
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">Avg. Time Between</Typography>
-            <Typography variant="h6">
-              {calculations.avgTimeBetween.toFixed(1)} min
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">Avg. Amount</Typography>
-            <Typography variant="h6">
-              {calculations.avgAmount.toFixed(0)} ml
-            </Typography>
-          </Grid>
-        </Grid>
-      </Paper>
-
-      <Paper elevation={3} sx={{ padding: 3, marginBottom: 3 }}>
-        <Typography variant="h6" gutterBottom>
-          Avg. Volumetric Flow Rates
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">High Pressure</Typography>
-            <Typography variant="h6">
-              {calculations.avgFlowRates.high.toFixed(2)} ml/sec
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">Medium Pressure</Typography>
-            <Typography variant="h6">
-              {calculations.avgFlowRates.medium.toFixed(2)} ml/sec
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="subtitle1">Low Pressure</Typography>
-            <Typography variant="h6">
-              {calculations.avgFlowRates.low.toFixed(2)} ml/sec
-            </Typography>
-          </Grid>
-        </Grid>
-      </Paper>
+      <ImportExport />
 
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box

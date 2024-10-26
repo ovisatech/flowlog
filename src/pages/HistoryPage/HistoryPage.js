@@ -7,7 +7,7 @@ const HistoryPage = () => {
 
   return (
     <div>
-      <h1>History</h1>
+      <h1>Historic entries</h1>
       <HistoryView
         entries={entries}
         onDelete={deleteEntry}

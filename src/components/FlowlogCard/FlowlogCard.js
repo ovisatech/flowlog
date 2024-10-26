@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
+import packageJson from "../../../package.json";
 
 const FlowlogCard = () => {
   return (
@@ -10,6 +11,7 @@ const FlowlogCard = () => {
         color: "white",
         marginBottom: 3,
         boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.25)",
+        position: "relative",
       }}
     >
       <CardContent sx={{ padding: "16px !important" }}>
@@ -26,6 +28,17 @@ const FlowlogCard = () => {
             </Typography>
           </Box>
         </Box>
+        <Typography
+          variant="caption"
+          sx={{
+            position: "absolute",
+            fontSize: "10px",
+            top: 8,
+            right: 8,
+          }}
+        >
+          {packageJson.version}
+        </Typography>
       </CardContent>
     </Card>
   );
