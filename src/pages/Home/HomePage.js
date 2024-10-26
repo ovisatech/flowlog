@@ -10,19 +10,11 @@ import {
   Alert,
 } from "@mui/material";
 import EntryForm from "../../components/EntryForm/EntryForm";
-import HistoryView from "../../components/HistoryView/HistoryView";
 import debug from "../../utils/debug";
 import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
-
-const HomePage = ({
-  entries,
-  onNewEntry,
-  onDeleteEntry,
-  onUpdateEntry,
-  onImportEntries,
-}) => {
+import FlowlogCard from "../../components/FlowlogCard";
+const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -159,10 +151,7 @@ const HomePage = ({
 
   return (
     <Box sx={{ maxWidth: 600, margin: "auto", padding: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Ovisa Flowlog
-      </Typography>
-
+      <FlowlogCard />
       <Box
         sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}
       >
@@ -230,29 +219,6 @@ const HomePage = ({
         </Grid>
       </Paper>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 2,
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setShowHistory(true)}
-        >
-          Go to History
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setOpenModal(true)}
-        >
-          Log New Entry
-        </Button>
-      </Box>
-
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box
           sx={{
@@ -269,14 +235,6 @@ const HomePage = ({
           <EntryForm onSubmit={handleNewEntry} />
         </Box>
       </Modal>
-
-      {showHistory && (
-        <HistoryView
-          entries={entries}
-          onDeleteEntry={onDeleteEntry}
-          onClose={() => setShowHistory(false)}
-        />
-      )}
 
       <Snackbar
         open={snackbar.open}
