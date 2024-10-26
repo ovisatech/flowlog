@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import useEntries from '../hooks/useEntries';
+import React, { createContext, useContext } from "react";
+import useEntries from "../hooks/useEntries";
 
 const EntriesContext = createContext();
 
@@ -16,9 +16,7 @@ export const EntriesProvider = ({ children }) => {
 export const useEntriesContext = () => {
   const context = useContext(EntriesContext);
   if (!context) {
-    throw new Error('useEntriesContext must be used within an EntriesProvider');
+    throw new Error("useEntriesContext must be used within an EntriesProvider");
   }
   return context;
 };
-
-

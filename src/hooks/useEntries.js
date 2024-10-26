@@ -9,9 +9,11 @@ const useEntries = () => {
   });
 
   const loadEntries = useCallback(() => {
-    const storedEntries = localStorage.getItem("entries");
+    const storedEntries = localStorage.getItem("urinationEntries");
     if (storedEntries) {
-      setEntries(JSON.parse(storedEntries));
+      const parsedEntries = JSON.parse(storedEntries);
+      debug("Loaded entries from localStorage:", parsedEntries);
+      setEntries(parsedEntries);
     }
   }, []);
 
@@ -43,12 +45,22 @@ const useEntries = () => {
     debug("All entries cleared");
   }, [saveEntries]);
 
+  const importEntries = useCallback((importedEntries) => {
+    debug("Importing entries:", importedEntries);
+    setEntries((prevEntries) => {
+      const updatedEntries = [...importedEntries, ...prevEntries];
+      localStorage.setItem("urinationEntries", JSON.stringify(updatedEntries));
+      return updatedEntries;
+    });
+  }, []);
+
   return {
     entries,
     addEntry,
     deleteEntry,
     clearEntries,
     loadEntries,
+    importEntries,
   };
 };
 

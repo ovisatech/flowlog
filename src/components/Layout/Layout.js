@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const actions = [
     { icon: <LocalDrinkIcon />, name: "Add intake" },
-    { icon: <WcIcon />, name: "History" },
+    { icon: <WcIcon />, name: "Add urination" },
   ];
 
   return (
@@ -35,13 +35,6 @@ const Layout = ({ children }) => {
           to="/"
         />
         <BottomNavigationAction
-          label="History"
-          value="/history"
-          icon={<HistoryIcon />}
-          component={Link}
-          to="/history"
-        />
-        <BottomNavigationAction
           label=""
           icon={
             <Box sx={{ position: "relative", top: 0 }}>
@@ -55,6 +48,9 @@ const Layout = ({ children }) => {
                     key={action.name}
                     icon={action.icon}
                     tooltipTitle={action.name}
+                    onClick={() => {
+                      alert("clicked");
+                    }}
                   />
                 ))}
               </SpeedDial>{" "}
@@ -69,6 +65,13 @@ const Layout = ({ children }) => {
           }}
         />
         <BottomNavigationAction
+          label="History"
+          value="/history"
+          icon={<HistoryIcon />}
+          component={Link}
+          to="/history"
+        />
+        {/* <BottomNavigationAction
           label="Statistics"
           value="/statistics"
           icon={<BarChartIcon />}
@@ -81,7 +84,7 @@ const Layout = ({ children }) => {
           icon={<SettingsIcon />}
           component={Link}
           to="/history"
-        />
+        /> */}
       </BottomNavigation>
     </Box>
   );

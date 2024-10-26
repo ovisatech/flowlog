@@ -13,7 +13,9 @@ import EntryForm from "../../components/EntryForm/EntryForm";
 import debug from "../../utils/debug";
 import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 import FlowlogCard from "../../components/FlowlogCard";
-const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
+import { useEntriesContext } from "../../context/EntriesContext";
+
+const HomePage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -21,6 +23,7 @@ const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
     severity: "info",
   });
   const fileInputRef = useRef(null);
+  const { entries, addEntry, updateEntry, importEntries } = useEntriesContext();
 
   debug("HomePage render. Current entries:", entries);
 
@@ -81,7 +84,7 @@ const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
     if (file) {
       importFromCSV(file)
         .then((importedEntries) => {
-          onImportEntries(importedEntries);
+          importEntries(importedEntries);
           setSnackbar({
             open: true,
             message: "Data imported successfully",
@@ -126,7 +129,7 @@ const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
   const handleNewEntry = useCallback(
     (newEntry) => {
       debug("handleNewEntry called with:", newEntry);
-      onNewEntry(newEntry);
+      newEntry(newEntry);
       const updatedEntries = recalculateVolumes(
         [newEntry, ...entries],
         calculations.avgFlowRates
@@ -134,19 +137,13 @@ const HomePage = ({ entries, onNewEntry, onUpdateEntry, onImportEntries }) => {
       debug("After onNewEntry. Current entries:", entries);
       updatedEntries.forEach((entry) => {
         if (entry.id !== newEntry.id) {
-          onUpdateEntry(entry);
+          updateEntry(entry);
         }
       });
       debug("Updated entries after recalculation:", updatedEntries);
       setOpenModal(false);
     },
-    [
-      onNewEntry,
-      entries,
-      calculations.avgFlowRates,
-      recalculateVolumes,
-      onUpdateEntry,
-    ]
+    [entries, calculations.avgFlowRates, recalculateVolumes, updateEntry]
   );
 
   return (
