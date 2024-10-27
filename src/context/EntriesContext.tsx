@@ -1,9 +1,13 @@
 import React, { createContext, useContext } from "react";
 import useEntries from "../hooks/useEntries";
 
-const EntriesContext = createContext();
+const EntriesContext = createContext<ReturnType<typeof useEntries> | null>(
+  null
+);
 
-export const EntriesProvider = ({ children }) => {
+export const EntriesProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const entriesData = useEntries();
 
   return (

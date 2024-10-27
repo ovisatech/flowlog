@@ -1,4 +1,4 @@
-import { React, useRef } from "react";
+import { useRef } from "react";
 import { Box, Button } from "@mui/material";
 import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 import { useEntriesContext } from "../../context/EntriesContext";
@@ -12,7 +12,7 @@ const ImportExport = () => {
     exportToCSV(entries);
   };
 
-  const handleImport = (event) => {
+  const handleImport = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       importFromCSV(file)
@@ -24,9 +24,10 @@ const ImportExport = () => {
         });
     }
   };
-
   const triggerFileInput = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      (fileInputRef.current as HTMLInputElement).click();
+    }
   };
 
   return (

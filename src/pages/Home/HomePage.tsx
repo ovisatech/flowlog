@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { Box, Modal, Snackbar, Alert } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import EntryForm from "../../components/EntryForm/EntryForm";
 import debug from "../../utils/debug";
 import FlowlogCard from "../../components/FlowlogCard";
@@ -8,12 +8,7 @@ import ImportExport from "../../components/ImportExport";
 
 const HomePage = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "info",
-  });
-  const { entries, updateEntry } = useEntriesContext();
+  const { entries } = useEntriesContext();
 
   debug("HomePage render. Current entries:", entries);
 
@@ -60,28 +55,24 @@ const HomePage = () => {
     };
   }, [entries]);
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbar({ ...snackbar, open: false });
-  };
-
-  const recalculateVolumes = useCallback((entries, avgFlowRates) => {
-    debug("Recalculating volumes", { entries, avgFlowRates });
-    return entries.map((entry) => {
-      if (!entry.volume && avgFlowRates[entry.pressure] > 0) {
-        const calculatedVolume = Math.round(
-          avgFlowRates[entry.pressure] * entry.duration
-        );
-        return { ...entry, calculatedVolume };
-      }
-      return entry;
-    });
-  }, []);
+  const recalculateVolumes = useCallback(
+    (entries: any[], avgFlowRates: any) => {
+      debug("Recalculating volumes", { entries, avgFlowRates });
+      return entries.map((entry: any) => {
+        if (!entry.volume && avgFlowRates[entry.pressure] > 0) {
+          const calculatedVolume = Math.round(
+            avgFlowRates[entry.pressure] * entry.duration
+          );
+          return { ...entry, calculatedVolume };
+        }
+        return entry;
+      });
+    },
+    []
+  );
 
   const handleNewEntry = useCallback(
-    (newEntry) => {
+    (newEntry: any) => {
       debug("handleNewEntry called with:", newEntry);
       newEntry(newEntry);
       const updatedEntries = recalculateVolumes(
@@ -89,7 +80,7 @@ const HomePage = () => {
         calculations.avgFlowRates
       );
       debug("After onNewEntry. Current entries:", entries);
-      updatedEntries.forEach((entry) => {
+      updatedEntries.forEach((entry: any) => {
         if (entry.id !== newEntry.id) {
           updateEntry(entry);
         }
@@ -97,7 +88,7 @@ const HomePage = () => {
       debug("Updated entries after recalculation:", updatedEntries);
       setOpenModal(false);
     },
-    [entries, calculations.avgFlowRates, recalculateVolumes, updateEntry]
+    [entries, calculations.avgFlowRates, recalculateVolumes]
   );
 
   return (
@@ -121,22 +112,11 @@ const HomePage = () => {
           <EntryForm onSubmit={handleNewEntry} />
         </Box>
       </Modal>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };
 
 export default HomePage;
+function updateEntry(entry: any) {
+  throw new Error("Function not implemented.");
+}

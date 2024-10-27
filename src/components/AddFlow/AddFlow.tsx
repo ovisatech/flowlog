@@ -12,14 +12,17 @@ import {
 } from "@mui/material";
 import { useEntriesContext } from "../../context/EntriesContext";
 
-const AddFlow = ({ open, onClose }) => {
+const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
+  open,
+  onClose,
+}) => {
   const { addEntry } = useEntriesContext();
-  const [duration, setDuration] = useState("");
-  const [pressure, setPressure] = useState("");
-  const [volume, setVolume] = useState("");
+  const [duration, setDuration] = useState<string>("");
+  const [pressure, setPressure] = useState<string>("");
+  const [volume, setVolume] = useState<string>("");
   const [notes, setNotes] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     addEntry({
       duration: parseInt(duration),

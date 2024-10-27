@@ -13,12 +13,27 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import debug from "../../utils/debug";
 
-const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
+const HistoryView = ({
+  entries,
+  onDeleteEntry,
+  onClose,
+}: {
+  entries: Array<{
+    volume?: number;
+    duration: number;
+    pressure: "high" | "medium" | "low";
+  }>;
+  onDeleteEntry: (id: string) => void;
+  onClose: () => void;
+}) => {
   const { avgFlowRates, entriesWithEstimatedVolume } = useMemo(() => {
     debug("Calculating average flow rates and estimated volumes");
-
     // Calculate average flow rates
-    const flowRates = { high: [], medium: [], low: [] };
+    const flowRates: { [key: string]: number[] } = {
+      high: [],
+      medium: [],
+      low: [],
+    };
     entries.forEach((entry) => {
       if (entry.volume) {
         flowRates[entry.pressure].push(entry.volume / entry.duration);

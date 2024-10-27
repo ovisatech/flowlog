@@ -9,13 +9,15 @@ import {
   Box,
 } from "@mui/material";
 
-const EntryForm = ({ onSubmit }) => {
-  const [duration, setDuration] = useState("");
-  const [pressure, setPressure] = useState("medium");
-  const [volume, setVolume] = useState("");
-  const [note, setNote] = useState("");
+const EntryForm: React.FC<{ onSubmit: (entry: any) => void }> = ({
+  onSubmit,
+}) => {
+  const [duration, setDuration] = useState<string>("");
+  const [pressure, setPressure] = useState<"high" | "medium" | "low">("medium");
+  const [volume, setVolume] = useState<string>("");
+  const [note, setNote] = useState<string>("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     const entry = {
       id: Date.now().toString(),
@@ -26,7 +28,6 @@ const EntryForm = ({ onSubmit }) => {
       note: note || null,
     };
     onSubmit(entry);
-    // Reset form
     setDuration("");
     setPressure("medium");
     setVolume("");
@@ -48,7 +49,9 @@ const EntryForm = ({ onSubmit }) => {
           <InputLabel>Pressure</InputLabel>
           <Select
             value={pressure}
-            onChange={(e) => setPressure(e.target.value)}
+            onChange={(e) =>
+              setPressure(e.target.value as "high" | "medium" | "low")
+            }
             label="Pressure"
           >
             <MenuItem value="high">High</MenuItem>

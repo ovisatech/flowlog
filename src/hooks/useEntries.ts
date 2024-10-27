@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import debug from "../utils/debug";
 
 const useEntries = () => {
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<any[]>([]);
 
   useEffect(() => {
     loadEntries();
@@ -17,13 +17,13 @@ const useEntries = () => {
     }
   }, []);
 
-  const saveEntries = useCallback((newEntries) => {
+  const saveEntries = useCallback((newEntries: any[]) => {
     localStorage.setItem("urinationEntries", JSON.stringify(newEntries));
     setEntries(newEntries);
   }, []);
 
   const addEntry = useCallback(
-    (newEntry) => {
+    (newEntry: any) => {
       const updatedEntries = [...entries, newEntry];
       saveEntries(updatedEntries);
       debug("Entry added:", newEntry);
@@ -32,7 +32,7 @@ const useEntries = () => {
   );
 
   const deleteEntry = useCallback(
-    (index) => {
+    (index: number) => {
       const updatedEntries = entries.filter((_, i) => i !== index);
       saveEntries(updatedEntries);
       debug("Entry deleted at index:", index);
@@ -45,7 +45,7 @@ const useEntries = () => {
     debug("All entries cleared");
   }, [saveEntries]);
 
-  const importEntries = useCallback((importedEntries) => {
+  const importEntries = useCallback((importedEntries: any[]) => {
     debug("Importing entries:", importedEntries);
     setEntries((prevEntries) => {
       const updatedEntries = [...importedEntries, ...prevEntries];

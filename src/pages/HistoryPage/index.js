@@ -1,1 +1,1 @@
-export { default } from "./HistoryPage";
+export { default } from "./HistoryPage.tsx";
