@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Drawer,
   Box,
@@ -19,18 +19,18 @@ const AddLiquid = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const { addEntry } = useEntriesContext();
+  const { liquidEntriesData } = useEntriesContext();
+  const { addLiquidEntry } = liquidEntriesData;
   const [volume, setVolume] = useState<string>("");
   const [type, setType] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    addEntry({
-      volume: parseFloat(volume),
-      type,
+    addLiquidEntry({
+      volumeMl: parseFloat(volume),
       notes,
-      timestamp: Date.now(),
+      timestamp: Date.now().toString(),
       entryType: "liquid",
     });
     onClose();

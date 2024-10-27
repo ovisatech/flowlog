@@ -1,1 +1,1 @@
-export { default } from "./HistoryView";
+export { default } from "./DisplayEntries";

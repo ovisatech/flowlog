@@ -1,17 +1,22 @@
 import React, { createContext, useContext } from "react";
-import useEntries from "../hooks/useEntries";
+import useUrinationEntries from "../hooks/useUrinationEntries";
+import useLiquidEntries from "../hooks/useLiquidIntakeEntries";
 
-const EntriesContext = createContext<ReturnType<typeof useEntries> | null>(
-  null
-);
+const EntriesContext = createContext<{
+  urinationEntriesData: ReturnType<typeof useUrinationEntries>;
+  liquidEntriesData: ReturnType<typeof useLiquidEntries>;
+} | null>(null);
 
 export const EntriesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const entriesData = useEntries();
+  const urinationEntriesData = useUrinationEntries();
+  const liquidEntriesData = useLiquidEntries();
 
   return (
-    <EntriesContext.Provider value={entriesData}>
+    <EntriesContext.Provider
+      value={{ urinationEntriesData, liquidEntriesData }}
+    >
       {children}
     </EntriesContext.Provider>
   );

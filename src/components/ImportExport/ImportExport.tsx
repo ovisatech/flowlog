@@ -5,11 +5,13 @@ import { useEntriesContext } from "../../context/EntriesContext";
 import debug from "../../utils/debug";
 
 const ImportExport = () => {
-  const fileInputRef = useRef(null);
-  const { entries, importEntries } = useEntriesContext();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { urinationEntriesData } = useEntriesContext();
+  const { entries: urinationEntries, importUrinationEntries } =
+    urinationEntriesData;
 
   const handleExport = () => {
-    exportToCSV(entries);
+    exportToCSV(urinationEntries);
   };
 
   const handleImport = (event: any) => {
@@ -17,7 +19,7 @@ const ImportExport = () => {
     if (file) {
       importFromCSV(file)
         .then((importedEntries) => {
-          importEntries(importedEntries);
+          importUrinationEntries(importedEntries);
         })
         .catch((error) => {
           debug("Error importing data", error);
