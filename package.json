@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp public/.htaccess build/.htaccess",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "test": "react-scripts test"
