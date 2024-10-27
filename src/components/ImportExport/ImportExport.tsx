@@ -1,32 +1,35 @@
-import { React, useRef } from "react";
+import { useRef } from "react";
 import { Box, Button } from "@mui/material";
 import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 import { useEntriesContext } from "../../context/EntriesContext";
 import debug from "../../utils/debug";
 
 const ImportExport = () => {
-  const fileInputRef = useRef(null);
-  const { entries, importEntries } = useEntriesContext();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { urinationEntriesData } = useEntriesContext();
+  const { entries: urinationEntries, importUrinationEntries } =
+    urinationEntriesData;
 
   const handleExport = () => {
-    exportToCSV(entries);
+    exportToCSV(urinationEntries);
   };
 
-  const handleImport = (event) => {
+  const handleImport = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       importFromCSV(file)
         .then((importedEntries) => {
-          importEntries(importedEntries);
+          importUrinationEntries(importedEntries);
         })
         .catch((error) => {
           debug("Error importing data", error);
         });
     }
   };
-
   const triggerFileInput = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      (fileInputRef.current as HTMLInputElement).click();
+    }
   };
 
   return (

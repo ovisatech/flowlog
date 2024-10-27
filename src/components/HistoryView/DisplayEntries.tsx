@@ -1,27 +1,36 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
   IconButton,
   Typography,
   Paper,
   Box,
-  Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import debug from "../../utils/debug";
+import { UrinationEntry } from "../../types/UrinationEntry";
+import { LiquidIntakeEntry } from "../../types/LiquidIntakeEntry";
 
-const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
+const DisplayEntries = ({
+  entries,
+  onDeleteEntry,
+}: {
+  entries: (UrinationEntry | LiquidIntakeEntry)[];
+  onDeleteEntry: (id: string) => void;
+}) => {
   const { avgFlowRates, entriesWithEstimatedVolume } = useMemo(() => {
     debug("Calculating average flow rates and estimated volumes");
-
     // Calculate average flow rates
-    const flowRates = { high: [], medium: [], low: [] };
+    const flowRates: { [key: string]: number[] } = {
+      high: [],
+      medium: [],
+      low: [],
+    };
     entries.forEach((entry) => {
-      if (entry.volume) {
-        flowRates[entry.pressure].push(entry.volume / entry.duration);
+      if (entry.volumeMl && "pressure" in entry) {
+        flowRates[entry.pressure].push(entry.volumeMl / entry.durationSeconds);
       }
     });
 
@@ -39,9 +48,13 @@ const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
 
     // Estimate volumes for entries without logged volumes
     const entriesWithEstimatedVolume = entries.map((entry) => {
-      if (!entry.volume && avgFlowRates[entry.pressure] > 0) {
+      if (
+        !entry.volumeMl &&
+        "pressure" in entry &&
+        avgFlowRates[entry.pressure] > 0
+      ) {
         const estimatedVolume = Math.round(
-          avgFlowRates[entry.pressure] * entry.duration
+          avgFlowRates[entry.pressure] * entry.durationSeconds
         );
         return { ...entry, estimatedVolume };
       }
@@ -68,12 +81,7 @@ const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
           alignItems: "center",
           marginBottom: 2,
         }}
-      >
-        <Typography variant="h5">History</Typography>
-        <Button onClick={onClose} variant="outlined">
-          Close
-        </Button>
-      </Box>
+      ></Box>
       <Box sx={{ marginBottom: 2 }}>
         <Typography variant="h6">Average Volumetric Flow Rates</Typography>
         <Typography>High: {avgFlowRates.high.toFixed(2)} ml/sec</Typography>
@@ -82,7 +90,19 @@ const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
       </Box>
       <List>
         {entriesWithEstimatedVolume.map((entry) => (
-          <ListItem key={entry.id} divider>
+          <ListItem
+            key={entry.id}
+            divider
+            secondaryAction={
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => onDeleteEntry(entry.id!)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            }
+          >
             <ListItemText
               primary={`Date: ${new Date(entry.timestamp).toLocaleString()}`}
               secondary={
@@ -92,40 +112,37 @@ const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
                     variant="body2"
                     color="textPrimary"
                   >
-                    Duration: {entry.duration} seconds
+                    Duration:{" "}
+                    {"durationSeconds" in entry ? entry.durationSeconds : "N/A"}{" "}
+                    seconds
                     <br />
-                    Pressure: {entry.pressure}
+                    Pressure: {"pressure" in entry ? entry.pressure : "N/A"}
                     <br />
-                    {entry.volume ? (
-                      `Volume: ${entry.volume} ml`
+                    {entry.volumeMl ? (
+                      `Volume: ${entry.volumeMl} ml`
                     ) : (
                       <Typography
                         component="span"
                         variant="body2"
                         style={{ fontStyle: "italic" }}
                       >
-                        Estimated Volume: {entry.estimatedVolume || "N/A"} ml
+                        Estimated Volume:{" "}
+                        {"pressure" in entry
+                          ? entry.estimatedVolumeMl || "N/A"
+                          : "N/A"}{" "}
+                        ml
                       </Typography>
                     )}
                   </Typography>
-                  {entry.note && (
+                  {entry.notes && (
                     <>
                       <br />
-                      Note: {entry.note}
+                      Note: {entry.notes}
                     </>
                   )}
                 </>
               }
             />
-            <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => onDeleteEntry(entry.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
@@ -133,4 +150,4 @@ const HistoryView = ({ entries, onDeleteEntry, onClose }) => {
   );
 };
 
-export default HistoryView;
+export default DisplayEntries;

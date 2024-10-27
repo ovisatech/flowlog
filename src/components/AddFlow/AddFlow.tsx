@@ -11,27 +11,32 @@ import {
   Typography,
 } from "@mui/material";
 import { useEntriesContext } from "../../context/EntriesContext";
+import { FlowPressure } from "../../types/FlowPressure";
 
-const AddFlow = ({ open, onClose }) => {
-  const { addEntry } = useEntriesContext();
-  const [duration, setDuration] = useState("");
-  const [pressure, setPressure] = useState("");
-  const [volume, setVolume] = useState("");
+const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
+  open,
+  onClose,
+}) => {
+  const { urinationEntriesData } = useEntriesContext();
+  const { addUrinationEntry } = urinationEntriesData;
+  const [duration, setDuration] = useState<string>("");
+  const [pressure, setPressure] = useState<FlowPressure>(FlowPressure.MEDIUM);
+  const [volume, setVolume] = useState<string>("");
   const [notes, setNotes] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    addEntry({
-      duration: parseInt(duration),
+    addUrinationEntry({
+      durationSeconds: parseInt(duration),
       pressure,
-      volume: volume ? parseFloat(volume) : null,
+      volumeMl: volume ? parseFloat(volume) : undefined,
       notes,
-      timestamp: Date.now(),
+      timestamp: Date.now().toString(),
     });
     onClose();
     // Reset form
     setDuration("");
-    setPressure("");
+    setPressure(FlowPressure.MEDIUM);
     setVolume("");
     setNotes("");
   };
@@ -65,7 +70,7 @@ const AddFlow = ({ open, onClose }) => {
           <InputLabel>Pressure Strength</InputLabel>
           <Select
             value={pressure}
-            onChange={(e) => setPressure(e.target.value)}
+            onChange={(e) => setPressure(e.target.value as FlowPressure)}
           >
             <MenuItem value="low">Low</MenuItem>
             <MenuItem value="medium">Medium</MenuItem>
