@@ -26,27 +26,43 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify .htaccess
+        run: |
+          ls -la build/
+          cat build/.htaccess
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-output
-          path: |
-            build
-            build/.htaccess
+          path: build
 
   deploy:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           name: build-output
           path: build
+
+      - name: Ensure .htaccess exists
+        run: |
+          if [ ! -f build/.htaccess ]; then
+            echo "# Redirect all requests to index.html
+            <IfModule mod_rewrite.c>
+              RewriteEngine On
+              RewriteBase /
+              RewriteRule ^index\.html$ - [L]
+              RewriteCond %{REQUEST_FILENAME} !-f
+              RewriteCond %{REQUEST_FILENAME} !-d
+              RewriteRule . /index.html [L]
+            </IfModule>" > build/.htaccess
+          fi
+          ls -la build/
+          cat build/.htaccess
 
       - name: Deploy to website using FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -58,3 +74,4 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
           local-dir: ./build/
+          dangerous-clean-slate: true
