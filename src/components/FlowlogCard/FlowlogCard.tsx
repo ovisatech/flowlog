@@ -1,14 +1,13 @@
-import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import packageJson from "../../../package.json";
-import { theme } from "../../theme";
+import { theme } from "../../theme/Theme";
 
 const FlowlogCard = () => {
   return (
     <Card
       sx={{
         margin: "auto",
-        background: theme.palette.primaryLinearGradient,
+        background: theme.primaryLinearGradient,
         color: "white",
         marginBottom: 3,
         boxShadow: theme.shadows.cardColored,

@@ -13,6 +13,7 @@ import { Link, useLocation } from "react-router-dom";
 import { WaterDrop, LocalDrink, Home, History } from "@mui/icons-material";
 import AddFlow from "../AddFlow";
 import AddLiquid from "../AddLiquid";
+import { theme } from "../../theme";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -48,11 +49,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     {
       icon: <LocalDrink />,
       name: "Add intake",
+      color: theme.primaryLinearGradient,
       onClick: handleAddLiquidOpen,
     },
     {
       icon: <WaterDrop />,
       name: "Add urination",
+      color: theme.primaryLinearGradient,
       onClick: handleAddFlowOpen,
     },
   ];
@@ -79,6 +82,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           icon={<Home />}
           component={Link}
           to="/"
+          sx={{
+            color: theme.primaryLinearGradient,
+          }}
         />
 
         {/* Only here to fill the gap, because BottomNavigation only likes to work with 3 or more items. */}
@@ -91,6 +97,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
+              backgroundColor: theme.primaryLinearGradient,
             }}
             icon={<SpeedDialIcon />}
           >
@@ -111,6 +118,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           icon={<History />}
           component={Link}
           to="/history"
+          sx={{
+            color: theme.primaryLinearGradient,
+          }}
         />
       </BottomNavigation>
     </Box>

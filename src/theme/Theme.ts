@@ -1,4 +1,6 @@
-export const theme = {
+import { createTheme } from '@mui/material/styles';
+
+const themeValues = {
   palette: {
     primary: {
       main: "#2A7FFF",
@@ -14,7 +16,6 @@ export const theme = {
       default: "#f8f9fa",
       paper: "#ffffff",
     },
-    primaryLinearGradient: "linear-gradient(#1166E7, #63A0FA)",
   },
   spacing: {
     xs: "8px",
@@ -45,6 +46,22 @@ export const theme = {
     cardWhite: "4px 4px 10px rgba(0, 0, 0, 0.1)",
     cardColored: "4px 4px 10px rgba(0, 0, 0, 0.2)",
   },
+};
+
+// Create MUI theme
+export const muiTheme = createTheme({
+  palette: {
+    primary: themeValues.palette.primary,
+    secondary: themeValues.palette.secondary,
+    background: themeValues.palette.background,
+  },
+});
+
+// Keep your custom theme for custom properties
+export const theme = {
+  ...themeValues,
+  // Custom properties that MUI doesn't support
+  primaryLinearGradient: "linear-gradient(#1166E7, #63A0FA)",
 };
 
 export type Theme = typeof theme;

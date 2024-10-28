@@ -4,23 +4,24 @@ import HomePage from "./pages/Home/HomePage";
 import HistoryPage from "./pages/HistoryPage/HistoryPage.tsx";
 import { EntriesProvider } from "./context/EntriesContext";
 import Layout from "./components/Layout/Layout";
-import { ThemeProvider } from "@emotion/react";
-import { theme } from "./theme";
+import { ThemeProvider } from "@mui/material/styles";
+import { muiTheme } from './theme/Theme';
 
 function App() {
   return (
-    <EntriesProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/history" element={<HistoryPage />} />
-          </Routes>
+    <ThemeProvider theme={muiTheme}>
+      <EntriesProvider>
+        <Router>
           <CssBaseline />
-          <ThemeProvider theme={theme} />
-        </Layout>
-      </Router>
-    </EntriesProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/history" element={<HistoryPage />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </EntriesProvider>
+    </ThemeProvider>
   );
 }
 
