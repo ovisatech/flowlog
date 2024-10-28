@@ -8,7 +8,7 @@ const HomePage = () => {
     <Box sx={{ maxWidth: 600, margin: "auto", padding: 3 }}>
       <FlowlogCard />
       <ImportExport />
-      <IntakeOutputCard totalIntake={0} totalOutput={0} />
+      <IntakeOutputCard />
     </Box>
   );
 };
