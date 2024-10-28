@@ -30,7 +30,7 @@ const AddLiquid = ({
     addLiquidEntry({
       volumeMl: parseFloat(volume),
       notes,
-      timestamp: Date.now().toString(),
+      timestamp: new Date(Date.now()),
       entryType: "liquid",
     });
     onClose();

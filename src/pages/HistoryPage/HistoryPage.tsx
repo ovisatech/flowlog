@@ -1,6 +1,7 @@
-import React from "react";
 import { useEntriesContext } from "../../context/EntriesContext";
-import DisplayEntries from "../../components/HistoryView";
+import { Box } from "@mui/material";
+import FlowlogCard from "../../components/FlowlogCard";
+import DisplayEntry from "../../components/DisplayEntry";
 
 const HistoryPage = () => {
   const { urinationEntriesData, liquidEntriesData } = useEntriesContext();
@@ -8,20 +9,24 @@ const HistoryPage = () => {
     urinationEntriesData;
   const { entries: liquidEntries, deleteLiquidEntry } = liquidEntriesData;
 
-  return (
-    <div>
-      <h1>Urination History</h1>
-      <DisplayEntries
-        entries={urinationEntries}
-        onDeleteEntry={deleteUrinationEntry}
-      />
+  const allEntries = [...urinationEntries, ...liquidEntries].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
 
-      <h1>Liquid Intake History</h1>
-      <DisplayEntries
-        entries={liquidEntries}
-        onDeleteEntry={deleteLiquidEntry}
-      />
-    </div>
+  return (
+    <Box>
+      <FlowlogCard />
+      <h1>History</h1>
+      {allEntries.map((entry) => (
+        <DisplayEntry
+          key={entry.id}
+          entry={entry}
+          onDeleteEntry={
+            "pressure" in entry ? deleteUrinationEntry : deleteLiquidEntry
+          }
+        />
+      ))}
+    </Box>
   );
 };
 

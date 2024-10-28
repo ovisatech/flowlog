@@ -31,7 +31,7 @@ const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
       pressure,
       volumeMl: volume ? parseFloat(volume) : undefined,
       notes,
-      timestamp: Date.now().toString(),
+      timestamp: new Date(Date.now()),
     });
     onClose();
     // Reset form
