@@ -1,29 +1,32 @@
-import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import packageJson from "../../../package.json";
+import { theme } from "../../theme/Theme";
 
 const FlowlogCard = () => {
   return (
     <Card
       sx={{
         margin: "auto",
-        background: "linear-gradient(0, #589BFF 0%, #2A7FFF 100%)",
+        background: theme.primaryLinearGradient,
         color: "white",
         marginBottom: 3,
-        boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.2)",
+        boxShadow: theme.shadows.cardColored,
         position: "relative",
       }}
     >
-      <CardContent sx={{ padding: "16px !important" }}>
+      <CardContent sx={{ padding: theme.spacing.md + "!important" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ flexShrink: 0, marginRight: 2 }}>
             <img src="/white.png" alt="Flowlog Logo" width="64" height="64" />
           </Box>
           <Box>
-            <Typography variant="h5" component="div">
+            <Typography
+              component="div"
+              sx={{ fontSize: theme.typography.fontSize.cardHeader }}
+            >
               Flowlog from Ovisa
             </Typography>
-            <Typography variant="body2">
+            <Typography sx={{ fontSize: theme.typography.fontSize.cardText }}>
               Track and manage your flow with Ovisa Flowlog
             </Typography>
           </Box>
@@ -32,9 +35,9 @@ const FlowlogCard = () => {
           variant="caption"
           sx={{
             position: "absolute",
-            fontSize: "10px",
-            top: 8,
-            right: 8,
+            fontSize: theme.typography.fontSize.smallText,
+            top: theme.spacing.sm,
+            right: theme.spacing.sm,
           }}
         >
           {packageJson.version}

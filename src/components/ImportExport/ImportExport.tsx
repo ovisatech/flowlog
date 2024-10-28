@@ -1,8 +1,10 @@
 import { useRef } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { exportToCSV, importFromCSV } from "../../utils/csvUtils";
 import { useEntriesContext } from "../../context/EntriesContext";
 import debug from "../../utils/debug";
+import StyledButton from "../OutsideCardButton/OutsideCardButton";
+import { theme } from "../../theme";
 
 const ImportExport = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,11 +36,13 @@ const ImportExport = () => {
 
   return (
     <Box
-      sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        marginTop: theme.spacing.cardSpacing,
+      }}
     >
-      <Button variant="outlined" onClick={handleExport}>
-        Export Data
-      </Button>
+      <StyledButton text="Export Data" onClick={handleExport} />
       <input
         type="file"
         ref={fileInputRef}
@@ -46,9 +50,7 @@ const ImportExport = () => {
         onChange={handleImport}
         accept=".csv"
       />
-      <Button variant="outlined" onClick={triggerFileInput}>
-        Import Data
-      </Button>
+      <StyledButton text="Import Data" onClick={triggerFileInput} />
     </Box>
   );
 };
