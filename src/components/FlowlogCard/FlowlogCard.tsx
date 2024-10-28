@@ -10,7 +10,7 @@ const FlowlogCard = () => {
         background: "linear-gradient(0, #589BFF 0%, #2A7FFF 100%)",
         color: "white",
         marginBottom: 3,
-        boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.25)",
+        boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.2)",
         position: "relative",
       }}
     >
