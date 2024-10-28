@@ -10,6 +10,7 @@ import {
 import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import { useEntriesContext } from "../../context/EntriesContext";
+import { theme } from "../../theme";
 
 const IntakeOutputCard: React.FC = () => {
   const { urinationEntriesData, liquidEntriesData } = useEntriesContext();
@@ -35,38 +36,66 @@ const IntakeOutputCard: React.FC = () => {
   return (
     <Card
       sx={{
-        marginTop: 3,
-        boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)",
+        marginTop: theme.spacing.cardSpacing,
+        boxShadow: theme.shadows.cardWhite,
       }}
       elevation={0}
     >
-      <CardHeader title="Intake & Output" sx={{ textAlign: "center" }} />
+      <CardHeader
+        title="Intake & Output"
+        sx={{
+          textAlign: "center",
+          fontSize: theme.typography.fontSize.cardHeader,
+        }}
+      />
       <CardContent sx={{ padding: 0 }}>
         <Grid container spacing={2}>
           <Grid size={6}>
-            <Typography variant="h6" align="center">
+            <Typography
+              sx={{ fontSize: theme.typography.fontSize.cardSubheader }}
+              align="center"
+            >
               Total Intake
             </Typography>
-            <Typography variant="h5" align="center">
-              +{totalIntake} mL
+            <Typography
+              sx={{ fontSize: theme.typography.fontSize.cardText }}
+              align="center"
+            >
+              +{totalIntake} ml
             </Typography>
             <Box
               sx={{ display: "flex", justifyContent: "center", marginTop: 1 }}
             >
-              <LocalDrinkIcon sx={{ color: "#2A7FFF", fontSize: 20 }} />
+              <LocalDrinkIcon
+                sx={{
+                  color: theme.palette.primary.main,
+                  fontSize: theme.iconSize.card,
+                }}
+              />
             </Box>
           </Grid>
           <Grid size={6}>
-            <Typography variant="h6" align="center">
+            <Typography
+              sx={{ fontSize: theme.typography.fontSize.cardSubheader }}
+              align="center"
+            >
               Total Output
             </Typography>
-            <Typography variant="h5" align="center">
-              {totalOutput === undefined ? "N/A" : `-${totalOutput} mL`}
+            <Typography
+              sx={{ fontSize: theme.typography.fontSize.cardText }}
+              align="center"
+            >
+              {totalOutput === undefined ? "N/A" : `-${totalOutput} ml`}
             </Typography>
             <Box
               sx={{ display: "flex", justifyContent: "center", marginTop: 1 }}
             >
-              <WaterDropIcon sx={{ color: "#2A7FFF", fontSize: 20 }} />
+              <WaterDropIcon
+                sx={{
+                  color: theme.palette.primary.main,
+                  fontSize: theme.iconSize.card,
+                }}
+              />
             </Box>
           </Grid>
         </Grid>

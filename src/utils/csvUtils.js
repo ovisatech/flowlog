@@ -1,14 +1,22 @@
 import debug from "./debug";
 
 export const exportToCSV = (entries) => {
-  const headers = ["id", "timestamp", "duration", "pressure", "volume", "note"];
+  const headers = [
+    "id",
+    "timestamp",
+    "durationSeconds",
+    "pressure",
+    "volumeMl",
+    "notes",
+    "estimatedVolumeMl",
+  ];
   const csvContent = [
     headers.join(","),
     ...entries.map((entry) =>
       headers
         .map((header) =>
           header === "timestamp"
-            ? new Date(entry[header]).toISOString()
+            ? new Date(parseInt(entry[header])).toISOString()
             : entry[header]
         )
         .join(",")

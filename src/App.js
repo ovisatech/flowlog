@@ -4,6 +4,8 @@ import HomePage from "./pages/Home/HomePage";
 import HistoryPage from "./pages/HistoryPage/HistoryPage.tsx";
 import { EntriesProvider } from "./context/EntriesContext";
 import Layout from "./components/Layout/Layout";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from "./theme";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
             <Route path="/history" element={<HistoryPage />} />
           </Routes>
           <CssBaseline />
+          <ThemeProvider theme={theme} />
         </Layout>
       </Router>
     </EntriesProvider>
