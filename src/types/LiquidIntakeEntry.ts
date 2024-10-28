@@ -1,6 +1,6 @@
 export type LiquidIntakeEntry = {
   id?: string;
-  timestamp: number;
+  timestamp: Date;
   volumeMl: number;
   type?: string;
   notes?: string;

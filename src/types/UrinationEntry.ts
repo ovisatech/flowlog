@@ -2,7 +2,7 @@ import { FlowPressure } from "./FlowPressure";
 
 export type UrinationEntry = {
   id?: string;
-  timestamp: string;
+  timestamp: Date;
   durationSeconds: number;
   pressure: FlowPressure;
   notes?: string;

@@ -2,6 +2,11 @@
 
 Ovisa Flowlog is a web application designed to help users track and monitor their urination patterns. This tool is particularly useful for individuals managing urinary health conditions or those who want to maintain better awareness of their hydration levels.
 
+Check out the live site at [flowlog.ovisa.dk](https://flowlog.ovisa.dk)
+
+You can try the app directly below:
+<iframe src="https://flowlog.ovisa.dk" width="100%" height="600px" frameborder="0"></iframe>
+
 ## Features
 
 - Easy-to-use interface for logging urination events
@@ -33,4 +38,5 @@ This application is automatically deployed to GitHub Pages when changes are push
 For any queries or support, please open an issue in the GitHub repository.
 
 ## Notes
+
 [<img alt="Ovisa Flowlog deployed for Free with FTP Deploy Action" src="https://img.shields.io/badge/Website deployed for free with-FTP DEPLOY ACTION-%3CCOLOR%3E?style=for-the-badge&color=297FA9">](https://github.com/SamKirkland/FTP-Deploy-Action)

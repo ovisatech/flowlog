@@ -5,7 +5,7 @@ import IntakeOutputCard from "../../components/IntakeOutputCard";
 
 const HomePage = () => {
   return (
-    <Box sx={{ maxWidth: 600, margin: "auto", padding: 3 }}>
+    <Box>
       <FlowlogCard />
       <ImportExport />
       <IntakeOutputCard />
