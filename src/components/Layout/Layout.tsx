@@ -84,6 +84,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           position: "fixed",
           bottom: 0,
           boxShadow: 5,
+          height: 65,
         }}
       >
         <BottomNavigationAction
@@ -99,28 +100,26 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
         {/* Only here to fill the gap, because BottomNavigation only likes to work with 3 or more items. */}
         <BottomNavigationAction />
-        <StyledFab>
-          <SpeedDial
-            ariaLabel="SpeedDial basic example"
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              left: "50%",
-              transform: "translateX(-50%)",
-              backgroundColor: theme.primaryLinearGradient,
-            }}
-            icon={<SpeedDialIcon />}
-          >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={action.onClick}
-              />
-            ))}
-          </SpeedDial>
-        </StyledFab>
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{
+            position: "absolute",
+            bottom: 65 - 28,
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: theme.primaryLinearGradient,
+          }}
+          icon={<SpeedDialIcon />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={action.onClick}
+            />
+          ))}
+        </SpeedDial>
 
         <BottomNavigationAction
           label="History"
