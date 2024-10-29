@@ -6,23 +6,12 @@ import {
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
-  Fab,
-  styled,
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { WaterDrop, LocalDrink, Home, History } from "@mui/icons-material";
 import AddFlow from "../AddFlow";
 import AddLiquid from "../AddLiquid";
 import { theme } from "../../theme";
-
-const StyledFab = styled(Fab)({
-  position: "absolute",
-  zIndex: 1,
-  top: -30,
-  left: 0,
-  right: 0,
-  margin: "0 auto",
-});
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAddFlowOpen, setIsAddFlowOpen] = useState(false);
