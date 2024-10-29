@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   Box,
@@ -9,9 +9,11 @@ import {
   Select,
   MenuItem,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { useEntriesContext } from "../../context/EntriesContext";
 import { FlowPressure } from "../../types/FlowPressure";
+import { Stop, Timer } from "@mui/icons-material";
 
 const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
@@ -19,30 +21,71 @@ const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
 }) => {
   const { urinationEntriesData } = useEntriesContext();
   const { addUrinationEntry } = urinationEntriesData;
-  const [duration, setDuration] = useState<string>("");
+  const [duration, setDuration] = useState<number>(0);
   const [pressure, setPressure] = useState<FlowPressure>(FlowPressure.MEDIUM);
   const [volume, setVolume] = useState<string>("");
   const [notes, setNotes] = useState("");
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
+
+  useEffect(() => {
+    let intervalId: number;
+    if (isTimerRunning) {
+      intervalId = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        setElapsedTime(elapsed);
+      }, 99);
+    } else {
+      setElapsedTime(0);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isTimerRunning, startTime]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     addUrinationEntry({
-      durationSeconds: parseInt(duration),
+      durationSeconds: duration,
       pressure,
       volumeMl: volume ? parseFloat(volume) : undefined,
       notes,
       timestamp: new Date(Date.now()),
     });
     onClose();
-    // Reset form
-    setDuration("");
+    resetForm();
+  };
+
+  const handleOnClose = () => {
+    resetForm();
+    onClose();
+  };
+
+  const resetForm = () => {
+    setDuration(0);
     setPressure(FlowPressure.MEDIUM);
     setVolume("");
     setNotes("");
+    setIsTimerRunning(false);
+    setElapsedTime(0);
   };
 
   return (
-    <Drawer anchor="bottom" open={open} onClose={onClose}>
+    <Drawer
+      anchor="bottom"
+      open={open}
+      onClose={handleOnClose}
+      PaperProps={{
+        sx: {
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+        },
+      }}
+    >
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -51,26 +94,56 @@ const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          maxWidth: 400,
-          margin: "0 auto",
+          width: "100%",
         }}
       >
         <Typography variant="h6" component="h2">
           Add New Flow Log
         </Typography>
-        <TextField
-          label="Duration (seconds)"
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          required
-          fullWidth
-        />
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <TextField
+            label="Duration (seconds)"
+            type="number"
+            value={isTimerRunning ? elapsedTime : duration}
+            onChange={(e) => setDuration(parseInt(e.target.value))}
+            required
+            fullWidth
+            disabled={isTimerRunning}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <IconButton
+              onClick={() => {
+                if (!isTimerRunning) {
+                  setStartTime(Date.now());
+                  setIsTimerRunning(true);
+                } else {
+                  setDuration(elapsedTime);
+                  setIsTimerRunning(false);
+                  setElapsedTime(0);
+                }
+              }}
+            >
+              {isTimerRunning ? (
+                <Stop color="error" />
+              ) : (
+                <Timer color="primary" />
+              )}
+            </IconButton>
+          </Box>
+        </Box>
         <FormControl fullWidth required>
           <InputLabel>Pressure Strength</InputLabel>
           <Select
             value={pressure}
+            label="Pressure Strength"
             onChange={(e) => setPressure(e.target.value as FlowPressure)}
+            defaultValue="medium"
           >
             <MenuItem value="low">Low</MenuItem>
             <MenuItem value="medium">Medium</MenuItem>
@@ -87,12 +160,17 @@ const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
         <TextField
           label="Notes (optional)"
           multiline
-          rows={3}
+          rows={2}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isTimerRunning || duration === 0}
+        >
           Add Entry
         </Button>
       </Box>

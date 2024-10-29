@@ -22,7 +22,7 @@ const AddLiquid = ({
   const { liquidEntriesData } = useEntriesContext();
   const { addLiquidEntry } = liquidEntriesData;
   const [volume, setVolume] = useState<string>("");
-  const [type, setType] = useState<string>("");
+  const [type, setType] = useState<string>("other");
   const [notes, setNotes] = useState<string>("");
 
   const handleSubmit = (e: any) => {
@@ -34,13 +34,32 @@ const AddLiquid = ({
       entryType: "liquid",
     });
     onClose();
+    resetForm();
+  };
+
+  const resetForm = () => {
     setVolume("");
-    setType("");
+    setType("other");
     setNotes("");
   };
 
+  const handleOnClose = () => {
+    resetForm();
+    onClose();
+  };
+
   return (
-    <Drawer anchor="bottom" open={open} onClose={onClose}>
+    <Drawer
+      anchor="bottom"
+      open={open}
+      onClose={handleOnClose}
+      PaperProps={{
+        sx: {
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+        },
+      }}
+    >
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -49,8 +68,7 @@ const AddLiquid = ({
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          maxWidth: 400,
-          margin: "0 auto",
+          width: "100%",
         }}
       >
         <Typography variant="h6" component="h2">
