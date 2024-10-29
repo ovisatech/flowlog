@@ -16,7 +16,6 @@ const useUrinationEntries = () => {
       const parsedEntries = JSON.parse(storedEntries);
       debug("Loaded entries from localStorage:", parsedEntries);
       const enrichedEntries = enrichEntriesWithEstimatedVolume(parsedEntries);
-
       setUrinationEntries(enrichedEntries);
     }
   }, []);
@@ -30,16 +29,14 @@ const useUrinationEntries = () => {
       LOCAL_STORAGE_KEY_URINATION,
       JSON.stringify(newEntries)
     );
-    setUrinationEntries(newEntries);
+    const enrichedEntries = enrichEntriesWithEstimatedVolume(newEntries);
+    setUrinationEntries(enrichedEntries);
   }, []);
 
   const addUrinationEntry = useCallback(
     (newEntry: UrinationEntry) => {
-      const enrichedEntries = enrichEntriesWithEstimatedVolume([
-        ...urinationEntries,
-        newEntry,
-      ]);
-      saveUrinationEntries(enrichedEntries);
+      newEntry.id = crypto.randomUUID();
+      saveUrinationEntries([...urinationEntries, newEntry]);
       debug("Entry added:", newEntry);
     },
     [urinationEntries, saveUrinationEntries]
@@ -47,11 +44,11 @@ const useUrinationEntries = () => {
 
   const deleteUrinationEntry = useCallback(
     (id: string) => {
+      debug("Deleting entry with id: ", id);
       const updatedEntries = urinationEntries.filter(
         (entry) => entry.id !== id
       );
       saveUrinationEntries(updatedEntries);
-      debug("Entry deleted at id:", id);
     },
     [urinationEntries, saveUrinationEntries]
   );

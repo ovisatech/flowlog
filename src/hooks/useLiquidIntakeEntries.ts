@@ -30,6 +30,7 @@ const useLiquidIntakeEntries = () => {
 
   const addLiquidEntry = useCallback(
     (newEntry: any) => {
+      newEntry.id = crypto.randomUUID();
       const updatedEntries = [...LiquidEntries, newEntry];
       saveLiquidEntries(updatedEntries);
       debug("Entry added:", newEntry);
@@ -39,9 +40,9 @@ const useLiquidIntakeEntries = () => {
 
   const deleteLiquidEntry = useCallback(
     (id: string) => {
+      debug("Deleting entry with id: ", id);
       const updatedEntries = LiquidEntries.filter((entry) => entry.id !== id);
       saveLiquidEntries(updatedEntries);
-      debug("Entry deleted:", id);
     },
     [LiquidEntries, saveLiquidEntries]
   );
