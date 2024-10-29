@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import debug from "../utils/debug";
 import { UrinationEntry } from "../types/UrinationEntry";
+import { enrichEntriesWithEstimatedVolume } from "../utils/volumeCalculation";
 
 const useUrinationEntries = () => {
   const LOCAL_STORAGE_KEY_URINATION = "urinationEntries";
@@ -14,7 +15,9 @@ const useUrinationEntries = () => {
     if (storedEntries) {
       const parsedEntries = JSON.parse(storedEntries);
       debug("Loaded entries from localStorage:", parsedEntries);
-      setUrinationEntries(parsedEntries);
+      const enrichedEntries = enrichEntriesWithEstimatedVolume(parsedEntries);
+
+      setUrinationEntries(enrichedEntries);
     }
   }, []);
 
@@ -32,8 +35,11 @@ const useUrinationEntries = () => {
 
   const addUrinationEntry = useCallback(
     (newEntry: UrinationEntry) => {
-      const updatedEntries = [...urinationEntries, newEntry];
-      saveUrinationEntries(updatedEntries);
+      const enrichedEntries = enrichEntriesWithEstimatedVolume([
+        ...urinationEntries,
+        newEntry,
+      ]);
+      saveUrinationEntries(enrichedEntries);
       debug("Entry added:", newEntry);
     },
     [urinationEntries, saveUrinationEntries]

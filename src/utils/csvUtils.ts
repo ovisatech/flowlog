@@ -1,6 +1,7 @@
+import { UrinationEntry } from "../types/UrinationEntry";
 import debug from "./debug";
 
-export const exportToCSV = (entries) => {
+export const exportToCSV = (entries: UrinationEntry[]) => {
   const headers = [
     "id",
     "timestamp",
@@ -16,8 +17,8 @@ export const exportToCSV = (entries) => {
       headers
         .map((header) =>
           header === "timestamp"
-            ? new Date(parseInt(entry[header])).toISOString()
-            : entry[header]
+            ? new Date(entry[header]).toISOString()
+            : entry[header as keyof UrinationEntry]
         )
         .join(",")
     ),
@@ -37,16 +38,16 @@ export const exportToCSV = (entries) => {
   debug("Data exported to CSV");
 };
 
-export const importFromCSV = (file) => {
+export const importFromCSV = (file: File) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target.result;
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      const text = event.target?.result as string;
       const lines = text.split("\n");
       const headers = lines[0].split(",");
-      const entries = lines.slice(1).map((line) => {
+      const entries = lines.slice(1).map((line: string) => {
         const values = line.split(",");
-        return headers.reduce((obj, header, index) => {
+        return headers.reduce((obj: Record<string, any>, header: string, index: number) => {
           if (header === "timestamp") {
             obj[header] = new Date(values[index]).getTime();
           } else if (header === "volume") {

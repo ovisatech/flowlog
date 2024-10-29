@@ -5,6 +5,7 @@ import { useEntriesContext } from "../../context/EntriesContext";
 import debug from "../../utils/debug";
 import StyledButton from "../OutsideCardButton/OutsideCardButton";
 import { theme } from "../../theme";
+import { UrinationEntry } from "../../types/UrinationEntry";
 
 const ImportExport = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +22,7 @@ const ImportExport = () => {
     if (file) {
       importFromCSV(file)
         .then((importedEntries) => {
-          importUrinationEntries(importedEntries);
+          importUrinationEntries(importedEntries as UrinationEntry[]);
         })
         .catch((error) => {
           debug("Error importing data", error);
