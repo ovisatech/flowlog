@@ -5,7 +5,7 @@ import HistoryPage from "./pages/HistoryPage/HistoryPage.tsx";
 import { EntriesProvider } from "./context/EntriesContext";
 import Layout from "./components/Layout/Layout";
 import { ThemeProvider } from "@mui/material/styles";
-import { muiTheme } from './theme/Theme';
+import { muiTheme } from "./theme/Theme";
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import { useEntriesContext } from "../../context/EntriesContext";
-import { Box } from "@mui/material";
-import FlowlogCard from "../../components/FlowlogCard";
 import DisplayEntry from "../../components/DisplayEntry";
+import TitleCard from "../../components/TitleCard/TitleCard";
+import { Box } from "@mui/material";
 
 const HistoryPage = () => {
   const { urinationEntriesData, liquidEntriesData } = useEntriesContext();
@@ -14,9 +14,8 @@ const HistoryPage = () => {
   );
 
   return (
-    <Box>
-      <FlowlogCard />
-      <h1>History</h1>
+    <>
+      <TitleCard title="History" />
       {allEntries.map((entry) => (
         <DisplayEntry
           key={entry.id}
@@ -26,7 +25,7 @@ const HistoryPage = () => {
           }
         />
       ))}
-    </Box>
+    </>
   );
 };
 
