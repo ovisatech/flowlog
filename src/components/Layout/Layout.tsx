@@ -50,16 +50,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        width: "100%",
+      }}
+    >
       <AddFlow open={isAddFlowOpen} onClose={handleAddFlowClose} />
       <AddLiquid open={isAddLiquidOpen} onClose={handleAddLiquidClose} />
 
       <Box
         sx={{
           flex: 1,
-          overflow: "auto",
-          maxWidth: 600,
-          margin: "auto",
           padding: 4,
         }}
       >
