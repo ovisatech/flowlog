@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEntriesContext } from "../../context/EntriesContext";
+import { theme } from "../../theme";
 
 const AddLiquid = ({
   open,
@@ -64,10 +65,11 @@ const AddLiquid = ({
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          p: 3,
+          padding: theme.spacing.xl,
+          paddingTop: theme.spacing.lg,
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: theme.spacing.md,
           width: "100%",
         }}
       >
@@ -105,7 +107,12 @@ const AddLiquid = ({
           onChange={(e) => setNotes(e.target.value)}
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={volume === ""}
+        >
           Add Liquid Intake
         </Button>
       </Box>

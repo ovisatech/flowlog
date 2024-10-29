@@ -14,6 +14,7 @@ import {
 import { useEntriesContext } from "../../context/EntriesContext";
 import { FlowPressure } from "../../types/FlowPressure";
 import { Stop, Timer } from "@mui/icons-material";
+import { theme } from "../../theme";
 
 const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
@@ -90,10 +91,11 @@ const AddFlow: React.FC<{ open: boolean; onClose: () => void }> = ({
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          p: 3,
+          padding: theme.spacing.xl,
+          paddingTop: theme.spacing.lg,
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: theme.spacing.md,
           width: "100%",
         }}
       >
