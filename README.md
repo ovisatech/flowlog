@@ -4,9 +4,6 @@ Ovisa Flowlog is a web application designed to help users track and monitor thei
 
 Check out the live site at [flowlog.ovisa.dk](https://flowlog.ovisa.dk)
 
-You can try the app directly below:
-<iframe src="https://flowlog.ovisa.dk" width="100%" height="600px" frameborder="0"></iframe>
-
 ## Features
 
 - Easy-to-use interface for logging urination events
