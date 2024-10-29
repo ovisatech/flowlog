@@ -2,7 +2,15 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import packageJson from "../../../package.json";
 import { theme } from "../../theme/Theme";
 
-const FlowlogCard = () => {
+const TitleCard = ({
+  title,
+  description,
+  logoUrl,
+}: {
+  title: string;
+  description?: string;
+  logoUrl?: string;
+}) => {
   return (
     <Card
       sx={{
@@ -16,19 +24,23 @@ const FlowlogCard = () => {
     >
       <CardContent sx={{ padding: theme.spacing.md + "!important" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ flexShrink: 0, marginRight: 2 }}>
-            <img src="/white.png" alt="Flowlog Logo" width="64" height="64" />
-          </Box>
+          {logoUrl && (
+            <Box sx={{ flexShrink: 0, marginRight: 2 }}>
+              <img src={logoUrl} alt="Flowlog Logo" width="64" height="64" />
+            </Box>
+          )}
           <Box>
             <Typography
               component="div"
               sx={{ fontSize: theme.typography.fontSize.cardHeader }}
             >
-              Flowlog from Ovisa
+              {title}
             </Typography>
-            <Typography sx={{ fontSize: theme.typography.fontSize.cardText }}>
-              Track and manage your flow with Ovisa Flowlog
-            </Typography>
+            {description && (
+              <Typography sx={{ fontSize: theme.typography.fontSize.cardText }}>
+                {description}
+              </Typography>
+            )}
           </Box>
         </Box>
         <Typography
@@ -47,4 +59,4 @@ const FlowlogCard = () => {
   );
 };
 
-export default FlowlogCard;
+export default TitleCard;

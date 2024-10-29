@@ -1,15 +1,18 @@
-import { Box } from "@mui/material";
-import FlowlogCard from "../../components/FlowlogCard";
 import ImportExport from "../../components/ImportExport";
 import IntakeOutputCard from "../../components/IntakeOutputCard";
+import TitleCard from "../../components/TitleCard/TitleCard";
 
 const HomePage = () => {
   return (
-    <Box>
-      <FlowlogCard />
+    <>
+      <TitleCard
+        title="Flowlog from Ovisa"
+        description="Track and manage your flow with Ovisa Flowlog"
+        logoUrl="/white.png"
+      />
       <ImportExport />
       <IntakeOutputCard />
-    </Box>
+    </>
   );
 };
 
