@@ -1,7 +1,6 @@
 import { useEntriesContext } from "../../context/EntriesContext";
 import DisplayEntry from "../../components/DisplayEntry";
 import TitleCard from "../../components/TitleCard/TitleCard";
-import { Box } from "@mui/material";
 
 const HistoryPage = () => {
   const { urinationEntriesData, liquidEntriesData } = useEntriesContext();
